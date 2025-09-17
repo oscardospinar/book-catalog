@@ -6,6 +6,7 @@ import com.moneygram.book_catalog.presentation.adapter.ResponseWrapperAdapter;
 import com.moneygram.book_catalog.presentation.dto.BookRequestDto;
 import com.moneygram.book_catalog.presentation.dto.BookResponseDto;
 import com.moneygram.book_catalog.presentation.dto.ResponseWrapper;
+import com.moneygram.book_catalog.presentation.handler.GlobalExceptionHandler;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,6 +27,9 @@ class BookControllerTest {
 
     @MockitoBean
     private IBookService bookService;
+
+    @MockitoBean
+    private GlobalExceptionHandler globalExceptionHandler;
 
     @MockitoBean
     private ResponseWrapperAdapter<BookResponseDto> wrapperAdapter;
