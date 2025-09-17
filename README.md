@@ -40,7 +40,7 @@ docker run -p 8080:8080 book-catalog
 - `GET /api/books/search?title={title}`: Get books by title.
 
 
-### Filtros
+### Filters
 The following filters could be use in `/api/books`:
  * `title`: Book title
  * `author`: Book author
