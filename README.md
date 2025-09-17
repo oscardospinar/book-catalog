@@ -31,7 +31,7 @@ cd book-catalog
 docker build -t book-catalog .
 docker run -p 8080:8080 book-catalog
 ```
-## Endpoints Disponibles
+## Endpoints
 - `GET /api/books`: Gets all the books.
 - `GET /api/books/{id}`: Get a book by id.
 - `POST /api/books`: Creates a new book.
