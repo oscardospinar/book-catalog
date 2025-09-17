@@ -46,9 +46,9 @@ public class BookController {
                 BOOKS_PATH);
     }
 
-    @Operation(summary = "Actualizar un libro",
-            description = "Actualiza un libro existente por su ID")
-    @ApiResponse(responseCode = "200", description = "Libro actualizado exitosamente")
+    @Operation(summary = "Updates a book",
+            description = "Updates a existing book based on the id")
+    @ApiResponse(responseCode = "200", description = "Book updated")
     @ApiResponse(responseCode = "404", description = "Libro no encontrado")
     @PutMapping("/{id}")
     public ResponseWrapper<BookResponseDto> update(@PathVariable String id, @RequestBody BookRequestDto request) {
@@ -62,10 +62,10 @@ public class BookController {
                 BOOKS_PATH + id);
     }
 
-    @Operation(summary = "Eliminar un libro",
-            description = "Elimina un libro por su ID")
-    @ApiResponse(responseCode = "200", description = "Libro eliminado exitosamente")
-    @ApiResponse(responseCode = "404", description = "Libro no encontrado")
+    @Operation(summary = "Deletes a book",
+            description = "Deletes a book based on the id")
+    @ApiResponse(responseCode = "200", description = "Deleted book")
+    @ApiResponse(responseCode = "404", description = "Book not found")
     @DeleteMapping("/{id}")
     public ResponseWrapper<BookResponseDto> delete(@PathVariable String id) {
         logger.info("Delete book: {}", id);
@@ -77,10 +77,10 @@ public class BookController {
                 BOOKS_PATH + id);
     }
 
-    @Operation(summary = "Obtener libro por ID",
-            description = "Busca un libro por su ID")
-    @ApiResponse(responseCode = "200", description = "Libro encontrado")
-    @ApiResponse(responseCode = "404", description = "Libro no encontrado")
+    @Operation(summary = "Gets a book by id",
+            description = "Gets a book by id")
+    @ApiResponse(responseCode = "200", description = "Found book")
+    @ApiResponse(responseCode = "404", description = "Book not found")
     @GetMapping("/{id}")
     public ResponseWrapper<BookResponseDto> getBookById(@PathVariable String id) {
         logger.info("Get book by id: {}", id);
@@ -93,9 +93,9 @@ public class BookController {
                 BOOKS_PATH + id);
     }
 
-    @Operation(summary = "Obtener todos los libros",
-            description = "Obtiene la lista completa de libros")
-    @ApiResponse(responseCode = "200", description = "Lista de libros recuperada exitosamente")
+    @Operation(summary = "Get all the books",
+            description = "Get a list with all books")
+    @ApiResponse(responseCode = "200", description = "List of all books")
     @GetMapping
     public ResponseWrapper<List<BookResponseDto>> getAllBooks() {
         logger.info("Get all books");
@@ -111,9 +111,9 @@ public class BookController {
                 BOOKS_PATH);
     }
 
-    @Operation(summary = "Buscar libros por criterios",
-            description = "Busca libros que coincidan con los criterios especificados")
-    @ApiResponse(responseCode = "200", description = "Búsqueda realizada exitosamente")
+    @Operation(summary = "Gets a books from filters",
+            description = "Gets a books from filters")
+    @ApiResponse(responseCode = "200", description = "Search successful")
     @GetMapping("search")
     public ResponseWrapper<List<BookResponseDto>> getBooks(
             @Parameter(description = "Book title") @RequestParam(required = false) String title,
