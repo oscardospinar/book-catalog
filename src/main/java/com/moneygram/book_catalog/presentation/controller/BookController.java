@@ -6,6 +6,10 @@ import com.moneygram.book_catalog.presentation.adapter.ResponseWrapperAdapter;
 import com.moneygram.book_catalog.presentation.dto.BookRequestDto;
 import com.moneygram.book_catalog.presentation.dto.BookResponseDto;
 import com.moneygram.book_catalog.presentation.dto.ResponseWrapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +19,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Books", description = "API for managing books in the catalog")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/books")
+@ControllerAdvice
 public class BookController {
 
     private final IBookService service;
@@ -25,6 +31,9 @@ public class BookController {
     private final Logger logger = LoggerFactory.getLogger(BookController.class);
     private static final String BOOKS_PATH = "/books/";
 
+    @Operation(summary = "Create Book",
+            description = "Creates a new book in the catalog")
+    @ApiResponse(responseCode = "200", description = "Book created successfully")
     @PostMapping
     public ResponseWrapper<BookResponseDto> saveBook(@RequestBody BookRequestDto request) {
         logger.info("Creating book: {}", request);
@@ -37,6 +46,10 @@ public class BookController {
                 BOOKS_PATH);
     }
 
+    @Operation(summary = "Actualizar un libro",
+            description = "Actualiza un libro existente por su ID")
+    @ApiResponse(responseCode = "200", description = "Libro actualizado exitosamente")
+    @ApiResponse(responseCode = "404", description = "Libro no encontrado")
     @PutMapping("/{id}")
     public ResponseWrapper<BookResponseDto> update(@PathVariable String id, @RequestBody BookRequestDto request) {
         logger.info("Update book: {}", request);
@@ -49,6 +62,10 @@ public class BookController {
                 BOOKS_PATH + id);
     }
 
+    @Operation(summary = "Eliminar un libro",
+            description = "Elimina un libro por su ID")
+    @ApiResponse(responseCode = "200", description = "Libro eliminado exitosamente")
+    @ApiResponse(responseCode = "404", description = "Libro no encontrado")
     @DeleteMapping("/{id}")
     public ResponseWrapper<BookResponseDto> delete(@PathVariable String id) {
         logger.info("Delete book: {}", id);
@@ -60,6 +77,10 @@ public class BookController {
                 BOOKS_PATH + id);
     }
 
+    @Operation(summary = "Obtener libro por ID",
+            description = "Busca un libro por su ID")
+    @ApiResponse(responseCode = "200", description = "Libro encontrado")
+    @ApiResponse(responseCode = "404", description = "Libro no encontrado")
     @GetMapping("/{id}")
     public ResponseWrapper<BookResponseDto> getBookById(@PathVariable String id) {
         logger.info("Get book by id: {}", id);
@@ -72,6 +93,9 @@ public class BookController {
                 BOOKS_PATH + id);
     }
 
+    @Operation(summary = "Obtener todos los libros",
+            description = "Obtiene la lista completa de libros")
+    @ApiResponse(responseCode = "200", description = "Lista de libros recuperada exitosamente")
     @GetMapping
     public ResponseWrapper<List<BookResponseDto>> getAllBooks() {
         logger.info("Get all books");
@@ -87,11 +111,14 @@ public class BookController {
                 BOOKS_PATH);
     }
 
+    @Operation(summary = "Buscar libros por criterios",
+            description = "Busca libros que coincidan con los criterios especificados")
+    @ApiResponse(responseCode = "200", description = "Búsqueda realizada exitosamente")
     @GetMapping("search")
     public ResponseWrapper<List<BookResponseDto>> getBooks(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String author,
-            @RequestParam(required = false) String isbn) {
+            @Parameter(description = "Book title") @RequestParam(required = false) String title,
+            @Parameter(description = "Book author") @RequestParam(required = false) String author,
+            @Parameter(description = "ISBN")  @RequestParam(required = false) String isbn) {
 
         BookRequestDto request = BookRequestDto.builder()
                 .author(author)
