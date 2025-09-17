@@ -22,7 +22,7 @@ class BookServiceTest {
 
     @Test
     void testFindAllBooks() {
-        when(repository.findAll()).thenReturn(List.of(new Book("1", "A", "B", "X", "", true)));
+        when(repository.findAllActive()).thenReturn(List.of(new Book("1", "A", "B", "X", "", true)));
         List<Book> books = service.findAll();
         assertEquals(1, books.size());
         assertEquals("A", books.getFirst().title());
@@ -39,14 +39,14 @@ class BookServiceTest {
     @Test
     void testFindByIdSuccess() {
         Book book = new Book("1", "A", "B", "X", "", true);
-        when(repository.findById("1")).thenReturn(Optional.of(book));
+        when(repository.findByIdAndActive("1")).thenReturn(Optional.of(book));
         Book found = service.findById("1");
         assertEquals("A", found.title());
     }
 
     @Test
     void testFindByIdNotFound() {
-        when(repository.findById("2")).thenReturn(Optional.empty());
+        when(repository.findByIdAndActive("2")).thenReturn(Optional.empty());
         assertThrows(com.moneygram.book_catalog.application.exception.EntityNotFoundException.class, () -> service.findById("2"));
     }
 
@@ -76,7 +76,7 @@ class BookServiceTest {
     void testDeleteBookSuccess() {
         Book book = new Book("1", "A", "B", "X", "", true);
         Book inactiveBook = book.copyWithActive(false);
-        when(repository.findById("1")).thenReturn(Optional.of(book));
+        when(repository.findByIdAndActive("1")).thenReturn(Optional.of(book));
         when(repository.update("1", inactiveBook)).thenReturn(Optional.of(inactiveBook));
         Book deleted = service.delete("1");
         assertFalse(deleted.active());
@@ -84,7 +84,7 @@ class BookServiceTest {
 
     @Test
     void testDeleteBookNotFound() {
-        when(repository.findById("2")).thenReturn(Optional.empty());
+        when(repository.findByIdAndActive("2")).thenReturn(Optional.empty());
         assertThrows(com.moneygram.book_catalog.application.exception.EntityNotFoundException.class, () -> service.delete("2"));
     }
 
@@ -92,7 +92,7 @@ class BookServiceTest {
     void testDeleteBookUpdateFailure() {
         Book book = new Book("1", "A", "B", "X", "", true);
         Book inactiveBook = book.copyWithActive(false);
-        when(repository.findById("1")).thenReturn(Optional.of(book));
+        when(repository.findByIdAndActive("1")).thenReturn(Optional.of(book));
         when(repository.update("1", inactiveBook)).thenReturn(Optional.empty());
         assertThrows(com.moneygram.book_catalog.application.exception.EntityUpdateException.class, () -> service.delete("1"));
     }
@@ -101,7 +101,7 @@ class BookServiceTest {
     void testFindByTemplate() {
         Book template = new Book(null, "A", null, null, null, null);
         Book book = new Book("1", "A", "B", "X", "", true);
-        when(repository.findByTemplate(template)).thenReturn(List.of(book));
+        when(repository.findByTemplateAndActive(template)).thenReturn(List.of(book));
         List<Book> result = service.findByTemplate(template);
         assertEquals(1, result.size());
         assertEquals("A", result.getFirst().title());

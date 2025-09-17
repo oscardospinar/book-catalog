@@ -6,13 +6,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IBookRepository {
-    Optional<Book> findById(String id);
+    Optional<Book> findByIdAndActive(String id);
 
     Optional<Book> create(Book book);
 
     Optional<Book> update(String id, Book book);
 
-    List<Book> findByTemplate(Book template);
+    List<Book> findByTemplateAndActive(Book template);
 
-    List<Book> findAll();
+    List<Book> findAllActive();
 }

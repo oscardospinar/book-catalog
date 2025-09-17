@@ -7,15 +7,17 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Repository
 public class BookRepository implements IBookRepository {
     private List<Book> books = new ArrayList<>();
 
     @Override
-    public Optional<Book> findById(String id) {
-        return books.stream().filter(book -> id.equals(book.id())).findAny();
+    public Optional<Book> findByIdAndActive(String id) {
+        return books
+                .stream()
+                .filter(book -> book.active() &&  id.equals(book.id()))
+                .findAny();
     }
 
     @Override
@@ -40,16 +42,16 @@ public class BookRepository implements IBookRepository {
     }
 
     @Override
-    public List<Book> findByTemplate(Book template) {
+    public List<Book> findByTemplateAndActive(Book template) {
         return books
                 .stream()
-                .filter(book -> matchesTemplate(book, template))
+                .filter(book -> book.active() && matchesTemplate(book, template))
                 .toList();
     }
 
     @Override
-    public List<Book> findAll() {
-        return books;
+    public List<Book> findAllActive() {
+        return books.stream().filter(Book::active).toList();
     }
 
     private boolean matchesTemplate(Book book, Book template) {

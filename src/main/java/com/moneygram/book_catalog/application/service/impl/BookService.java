@@ -21,7 +21,7 @@ public class BookService implements IBookService {
     @Override
     public Book findById(String id) {
         return bookRepository
-                .findById(id)
+                .findByIdAndActive(id)
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
     }
 
@@ -42,7 +42,7 @@ public class BookService implements IBookService {
     @Override
     public Book delete(String id) {
         Book book = bookRepository
-                .findById(id)
+                .findByIdAndActive(id)
                 .orElseThrow(() -> new EntityNotFoundException("Book not found"));
         return bookRepository
                 .update(id, book.copyWithActive(false))
@@ -51,11 +51,11 @@ public class BookService implements IBookService {
 
     @Override
     public List<Book> findByTemplate(Book template) {
-        return bookRepository.findByTemplate(template);
+        return bookRepository.findByTemplateAndActive(template);
     }
 
     @Override
     public List<Book> findAll() {
-        return bookRepository.findAll();
+        return bookRepository.findAllActive();
     }
 }
