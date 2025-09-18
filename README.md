@@ -4,9 +4,9 @@ Simple API REST for the books catalogue.
 
 ## Requirements
 
-- Java 17 o greater
-- Gradle 7.x
-- Docker (opcional)
+- Java 21.x
+- Gradle 8.x
+- Docker (optional)
 
 ## Setting Up the Project
 
@@ -31,6 +31,17 @@ cd book-catalog
 docker build -t book-catalog .
 docker run -p 8080:8080 book-catalog
 ```
+## Test
+### Unit test
+The project has a test suite with coverage of 90%, to run the test
+
+```bash
+./gradlew clean test
+```
+
+![test .png](docs/test.png)
+### Coverage
+![coverage.png](docs/coverage.png)
 ## Endpoints
 - `GET /api/books`: Gets all the books.
 - `GET /api/books/{id}`: Get a book by id.
